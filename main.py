@@ -44,7 +44,7 @@ else:
         client_kwargs['base_url'] = base_url
         
     client = OpenAI(**client_kwargs)
-    model = "gpt-4"  # Default model for standard OpenAI
+    model =  os.getenv('DEPLOYMENT_NAME',"gpt-4.1")  # Default model for standard OpenAI
 
 def get_crossword(theme=None, size=15, word_count=20):
     # Default is 15x15 which is standard for crosswords

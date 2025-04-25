@@ -2,13 +2,15 @@
 
 An interactive web application that generates unique crossword puzzles using AI. Create personalized crossword puzzles with custom themes for endless fun and learning.
 
-![Crossword AI Demo](https://i.imgur.com/EXAMPLE.png)
+![Crossword AI Demo](./crossword-client/public/crossword-3d-example.svg)
+
+*The app features an elegant, interactive crossword interface*
 
 ## Features
 
 - **AI-Generated Content**: Every puzzle is unique, created by Azure OpenAI
 - **Themed Puzzles**: Generate crosswords based on any topic of interest
-- **Interactive Interface**: Click and type to fill in answers
+- **Interactive Interface**: Responsive design with real-time user feedback
 - **Real-time Feedback**: Instant validation of correct/incorrect answers
 - **Score Tracking**: Points awarded for correct answers
 - **Timer**: Challenge yourself to complete puzzles quickly

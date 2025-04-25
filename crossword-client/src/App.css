@@ -1,6 +1,7 @@
 /* Main App Styling */
 .App {
-  max-width: 1200px;
+  max-width: 95vw;
+  width: 1400px;
   margin: 0 auto;
   padding: 20px;
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
@@ -132,23 +133,45 @@
   justify-content: center;
 }
 
+.game-container.side-by-side {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  gap: 30px;
+  justify-content: space-between;
+  align-items: flex-start;
+  min-height: 600px;
+  height: calc(90vh - 200px);
+}
+
 .grid-container {
   background-color: white;
   border-radius: 10px;
   padding: 20px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  flex: 3;
+  min-width: 280px;
+  max-width: none;
+  overflow: auto;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .crossword-grid {
   border-collapse: collapse;
   border: 2px solid #333;
+  margin: 0 auto;
+  max-width: 100%;
+  height: auto;
 }
 
 .cell {
   border: 1px solid #999;
   padding: 0;
-  width: 50px;
-  height: 50px;
+  width: min(5vw, 50px);
+  height: min(5vw, 50px);
+  aspect-ratio: 1 / 1; /* Ensure cells are always square */
   text-align: center;
   position: relative;
 }
@@ -161,7 +184,7 @@
 .cell-content {
   width: 100%;
   height: 100%;
-  font-size: 1.8rem;
+  font-size: clamp(1.2rem, 3vw, 1.8rem);
   text-align: center;
   text-transform: uppercase;
   font-weight: bold;
@@ -218,11 +241,14 @@
   border-radius: 10px;
   padding: 20px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  flex: 1;
+  flex: 2;
   min-width: 300px;
-  max-width: 500px;
-  max-height: 600px;
-  overflow-y: auto;
+  max-width: none;
+  height: 100%;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
 }
 
 .action-buttons {
@@ -285,19 +311,30 @@
 }
 
 .current-clue {
-  font-size: 1.5rem;
+  font-size: 1.25rem;
   margin-bottom: 20px;
   color: #1e3a8a;
   font-weight: bold;
   padding: 10px;
   border-radius: 8px;
   background-color: #f0f4ff;
+  box-shadow: 0 2px 4px rgba(30, 58, 138, 0.1);
+  border-left: 4px solid #4f46e5;
+  min-height: 50px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
 }
 
 .clue-lists {
   display: flex;
   flex-direction: column;
   gap: 20px;
+  flex: 1;
+  overflow-y: auto;
+  padding-right: 10px;
+  scroll-behavior: smooth;
 }
 
 .clue-section h3 {
@@ -372,23 +409,40 @@
 }
 
 /* Responsive adjustments */
-@media (max-width: 768px) {
-  .game-container {
+@media (max-width: 900px) {
+  .game-container.side-by-side {
     flex-direction: column;
     align-items: center;
+    height: auto;
   }
   
-  .cell {
-    width: 40px;
-    height: 40px;
-  }
-  
-  .cell input {
-    font-size: 1.5rem;
+  .grid-container {
+    max-width: none;
+    width: 100%;
+    flex-basis: auto;
+    height: auto;
+    min-height: 400px;
   }
   
   .info-panel {
     max-width: none;
     width: 100%;
+    position: static;
+    margin-top: 20px;
+    height: 500px;
+  }
+}
+
+@media (max-width: 600px) {
+  .App {
+    padding: 10px;
+  }
+
+  .game-container.side-by-side {
+    gap: 15px;
+  }
+
+  .cell-number {
+    font-size: 0.7rem;
   }
 }
