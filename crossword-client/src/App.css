@@ -1,0 +1,394 @@
+/* Main App Styling */
+.App {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  color: #333;
+  outline: none; /* Remove focus outline */
+}
+
+.app-header {
+  background-color: #1e3a8a;
+  color: white;
+  padding: 20px;
+  border-radius: 10px;
+  margin-bottom: 20px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  text-align: center;
+}
+
+.app-header h1 {
+  margin: 0;
+  font-size: 2.5rem;
+}
+
+.app-header p {
+  font-size: 1.2rem;
+  margin-top: 10px;
+  opacity: 0.9;
+}
+
+.controls {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-bottom: 20px;
+  justify-content: center;
+  align-items: center;
+}
+
+.settings {
+  display: flex;
+  gap: 10px;
+  flex-grow: 1;
+  max-width: 500px;
+}
+
+.theme-input {
+  padding: 12px 15px;
+  border-radius: 8px;
+  border: 2px solid #ddd;
+  font-size: 1rem;
+  flex-grow: 1;
+  transition: border-color 0.3s;
+}
+
+.theme-input:focus {
+  border-color: #1e3a8a;
+  outline: none;
+}
+
+.theme-input:disabled {
+  background-color: #f3f4f6;
+  cursor: not-allowed;
+}
+
+.size-select {
+  padding: 12px 15px;
+  border-radius: 8px;
+  border: 2px solid #ddd;
+  font-size: 1rem;
+  min-width: 150px;
+  cursor: pointer;
+  background-color: white;
+  transition: border-color 0.3s;
+}
+
+.size-select:focus {
+  border-color: #1e3a8a;
+  outline: none;
+}
+
+.new-game-btn {
+  background-color: #1e3a8a;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  padding: 12px 24px;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background-color 0.3s;
+  font-weight: bold;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.new-game-btn:hover {
+  background-color: #2d4ba0;
+}
+
+.stats-bar {
+  display: flex;
+  justify-content: space-around;
+  background-color: #f8f9fa;
+  padding: 15px;
+  border-radius: 8px;
+  margin-bottom: 20px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+.stat {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.stat-label {
+  font-size: 0.9rem;
+  color: #666;
+  margin-bottom: 5px;
+}
+
+.stat-value {
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: #1e3a8a;
+}
+
+.game-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  justify-content: center;
+}
+
+.grid-container {
+  background-color: white;
+  border-radius: 10px;
+  padding: 20px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.crossword-grid {
+  border-collapse: collapse;
+  border: 2px solid #333;
+}
+
+.cell {
+  border: 1px solid #999;
+  padding: 0;
+  width: 50px;
+  height: 50px;
+  text-align: center;
+  position: relative;
+}
+
+.cell.empty {
+  background-color: #222;
+  border: 1px solid #444;
+}
+
+.cell-content {
+  width: 100%;
+  height: 100%;
+  font-size: 1.8rem;
+  text-align: center;
+  text-transform: uppercase;
+  font-weight: bold;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.cell-number {
+  position: absolute;
+  top: 2px;
+  left: 2px;
+  font-size: 0.8rem;
+  line-height: 1;
+  color: #333;
+  font-weight: bold;
+}
+
+.cell.selected {
+  background-color: #c7d2fe;
+  box-shadow: 0 0 0 2px #4f46e5;
+  z-index: 10;
+  position: relative;
+}
+
+.cell.in-selected-word {
+  background-color: #e0e7ff;
+  position: relative;
+  z-index: 5;
+  box-shadow: 0 0 0 1px #8896fc;
+}
+
+.cell.correct .cell-content {
+  background: #86efac;
+  color: #166534;
+}
+
+.cell.wrong .cell-content {
+  background: #fecaca;
+  color: #b91c1c;
+}
+
+.cell.revealed {
+  background-color: #f0f9ff;
+}
+
+.cell.revealed .cell-content {
+  color: #2563eb;
+  font-weight: bold;
+}
+
+.info-panel {
+  background-color: white;
+  border-radius: 10px;
+  padding: 20px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  flex: 1;
+  min-width: 300px;
+  max-width: 500px;
+  max-height: 600px;
+  overflow-y: auto;
+}
+
+.action-buttons {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 15px;
+}
+
+.reveal-btn, .reveal-all-btn {
+  padding: 10px 15px;
+  border-radius: 6px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  flex: 1;
+  border: none;
+}
+
+.reveal-btn {
+  background-color: #e0e7ff;
+  color: #4338ca;
+}
+
+.reveal-btn:hover:not(:disabled) {
+  background-color: #c7d2fe;
+}
+
+.reveal-all-btn {
+  background-color: #fee2e2;
+  color: #b91c1c;
+}
+
+.reveal-all-btn:hover:not(:disabled) {
+  background-color: #fecaca;
+}
+
+.reveal-btn:disabled, .reveal-all-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.finished-banner {
+  background-color: #fef3c7;
+  border: 2px solid #f59e0b;
+  border-radius: 8px;
+  padding: 15px;
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+.finished-banner h3 {
+  color: #92400e;
+  margin-top: 0;
+  margin-bottom: 10px;
+}
+
+.finished-banner p {
+  margin: 5px 0;
+  font-weight: bold;
+}
+
+.current-clue {
+  font-size: 1.5rem;
+  margin-bottom: 20px;
+  color: #1e3a8a;
+  font-weight: bold;
+  padding: 10px;
+  border-radius: 8px;
+  background-color: #f0f4ff;
+}
+
+.clue-lists {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.clue-section h3 {
+  color: #1e3a8a;
+  border-bottom: 2px solid #e5e7eb;
+  padding-bottom: 10px;
+  margin-bottom: 15px;
+}
+
+.clue-list {
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+}
+
+.clue-item {
+  padding: 8px 5px;
+  margin-bottom: 5px;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.2s;
+  display: flex;
+}
+
+.clue-item:hover {
+  background-color: #f0f4ff;
+}
+
+.clue-item.active {
+  background-color: #dbeafe;
+  font-weight: bold;
+}
+
+.clue-item.completed {
+  color: #166534;
+}
+
+.clue-item.completed .clue-word {
+  color: #166534;
+}
+
+.clue-word {
+  font-weight: bold;
+  margin-right: 8px;
+  min-width: 30px;
+}
+
+.checkmark {
+  color: #16a34a;
+  margin-left: 8px;
+  font-weight: bold;
+}
+
+.empty-state {
+  text-align: center;
+  padding: 40px 20px;
+  border-radius: 10px;
+  background-color: #f8f9fa;
+  border: 2px dashed #ddd;
+  margin-top: 20px;
+}
+
+.empty-state h2 {
+  color: #666;
+  margin-bottom: 15px;
+}
+
+.empty-state p {
+  color: #888;
+  max-width: 500px;
+  margin: 0 auto 20px;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .game-container {
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  .cell {
+    width: 40px;
+    height: 40px;
+  }
+  
+  .cell input {
+    font-size: 1.5rem;
+  }
+  
+  .info-panel {
+    max-width: none;
+    width: 100%;
+  }
+}
