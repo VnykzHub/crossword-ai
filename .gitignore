@@ -1,0 +1,62 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+env/
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+*.egg-info/
+.installed.cfg
+*.egg
+
+# Environment variables
+.env
+.env.local
+.env.*.local
+# But keep the example file
+!.env.example
+
+# Node.js / React
+node_modules/
+/crossword-client/node_modules
+/crossword-client/build
+/crossword-client/.DS_Store
+/crossword-client/.env.local
+/crossword-client/.env.development.local
+/crossword-client/.env.test.local
+/crossword-client/.env.production.local
+
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.pnp
+.pnp.js
+
+# IDE / OS specific
+.idea/
+.vscode/
+*.swp
+*.swo
+.DS_Store
+Thumbs.db
+.project
+.classpath
+.settings/
+.vscode/
+*.sublime-workspace
+*.sublime-project
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
