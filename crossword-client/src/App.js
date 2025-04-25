@@ -1,5 +1,7 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useCallback } from 'react';
 import './App.css';
+
+// Removed Error Boundary as it's no longer needed without 3D components
 
 function Cell({value, userValue, onClick, correct, selected, number, revealed, isPartOfSelectedWord}) {
   // If the cell has no value (empty cell in the crossword), make it black
@@ -51,6 +53,8 @@ function App() {
   const [gridSize, setGridSize] = useState(15);
   const [wordCount, setWordCount] = useState(20);
   const [isInputFocused, setIsInputFocused] = useState(false);
+  
+  // Removed 3D mode state
   
   // Calculate numbers for cells
   const getCellNumbers = () => {
@@ -441,6 +445,49 @@ function App() {
     }
   };
   
+  // Move to the previous cell in the current word
+  // Returns coordinates of the previous cell [row, col]
+  const moveToPreviousCellCoordinates = () => {
+    if (!selectedCell || !crossword) return [0, 0];
+    
+    const [r, c] = selectedCell.split(',').map(Number);
+    
+    // First try to get a word in the current direction
+    let currentDirectionWord = null;
+    
+    if (selectedDirection === 'across') {
+      currentDirectionWord = crossword.placements.find(p => 
+        p.dir === 'across' && p.row === r && c >= p.col && c < p.col + p.length
+      );
+      
+      if (currentDirectionWord) {
+        const offset = c - currentDirectionWord.col;
+        
+        // If not at the beginning of the word, move left
+        if (offset > 0) {
+          return [r, c - 1];
+        }
+      }
+    } else { // down
+      currentDirectionWord = crossword.placements.find(p => 
+        p.dir === 'down' && p.col === c && r >= p.row && r < p.row + p.length
+      );
+      
+      if (currentDirectionWord) {
+        const offset = r - currentDirectionWord.row;
+        
+        // If not at the beginning of the word, move up
+        if (offset > 0) {
+          return [r - 1, c];
+        }
+      }
+    }
+    
+    // If we're at the beginning of the word or couldn't find a current direction word,
+    // stay at the current cell
+    return [r, c];
+  };
+  
   // Handle keyboard input
   function handleKeyDown(e){
     // Don't process if there's no crossword loaded or game is finished
@@ -456,8 +503,58 @@ function App() {
       return;
     }
     
+    // Handle Backspace key
+    if(selectedCell && e.key === "Backspace") {
+      e.preventDefault();
+      
+      const [r,c]=selectedCell.split(',').map(Number);
+      
+      // Don't allow changing revealed cells
+      if(revealedCells[selectedCell]) return;
+      
+      // Make sure we're within valid grid bounds
+      if (r < 0 || r >= crossword.grid.length || c < 0 || c >= crossword.grid[0].length) return;
+      
+      // Make sure the cell has a letter in the solution
+      if (!crossword.grid[r][c]) return;
+      
+      // Check if current cell is empty
+      const currentCellEmpty = !inputs[selectedCell];
+      
+      // Update inputs state safely without triggering a reset
+      const newInputs = {...inputs};
+      
+      // If current cell has a value, clear it
+      if (!currentCellEmpty) {
+        delete newInputs[selectedCell];
+        setInputs(newInputs);
+        
+        // Update score if needed
+        // No need to change score here as we're just clearing, not marking as wrong
+        
+        // Check word completion status
+        checkWordCompletion(newInputs);
+      } 
+      // If current cell is empty, move to previous cell and clear it
+      else {
+        // Move to previous cell
+        const [prevR, prevC] = moveToPreviousCellCoordinates();
+        if (prevR !== r || prevC !== c) { // Only if we actually moved
+          const prevCellKey = `${prevR},${prevC}`;
+          // Clear the previous cell
+          delete newInputs[prevCellKey];
+          setInputs(newInputs);
+          
+          // Set selection to previous cell
+          setSelectedCell(prevCellKey);
+          
+          // Check word completion status
+          checkWordCompletion(newInputs);
+        }
+      }
+    }
     // Handle letter input
-    if(selectedCell && /^[a-zA-Z]$/.test(e.key)) {
+    else if(selectedCell && /^[a-zA-Z]$/.test(e.key)) {
       // Prevent default behavior for letter keys
       e.preventDefault();
       
@@ -520,7 +617,16 @@ function App() {
   // Update the reference when necessary dependencies change
   useEffect(() => {
     keyDownHandlerRef.current = handleKeyDown;
-  }, [crossword, gameFinished, selectedCell, selectedDirection, revealedCells, inputs, isInputFocused]);
+  }, [
+    handleKeyDown, 
+    crossword, 
+    gameFinished, 
+    selectedCell, 
+    selectedDirection, 
+    revealedCells, 
+    inputs, 
+    isInputFocused
+  ]);
   
   // Only add/remove the event listener once
   useEffect(() => {
@@ -699,7 +805,7 @@ function App() {
       )}
       
       {crossword && (
-        <div className="game-container">
+        <div className="game-container side-by-side">
           <div className="grid-container">
             <table className="crossword-grid">
               <tbody>
@@ -799,12 +905,16 @@ function App() {
                         setSelectedDirection('across');
                       }}
                       ref={el => {
-                        // Auto-scroll to the selected clue
+                        // Auto-scroll to the selected clue within the parent container
                         if (el && getSelectedWord() && 
                             getSelectedWord().row === p.row && 
                             getSelectedWord().col === p.col && 
                             getSelectedWord().dir === 'across') {
-                          el.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+                          const container = el.closest('.clue-lists');
+                          if (container) {
+                            // Scroll within the clue container only
+                            el.scrollIntoView({ behavior: 'smooth', block: 'center', inline: 'nearest', scrollMode: 'if-needed' });
+                          }
                         }
                       }}
                     >
@@ -839,12 +949,16 @@ function App() {
                         setSelectedDirection('down');
                       }}
                       ref={el => {
-                        // Auto-scroll to the selected clue
+                        // Auto-scroll to the selected clue within the parent container
                         if (el && getSelectedWord() && 
                             getSelectedWord().row === p.row && 
                             getSelectedWord().col === p.col && 
                             getSelectedWord().dir === 'down') {
-                          el.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+                          const container = el.closest('.clue-lists');
+                          if (container) {
+                            // Scroll within the clue container only
+                            el.scrollIntoView({ behavior: 'smooth', block: 'center', inline: 'nearest', scrollMode: 'if-needed' });
+                          }
                         }
                       }}
                     >
